@@ -1,0 +1,119 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[UTF8]{ctex}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{a4wide}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{booktabs}%第二个包定义了几个*rule
+%___________________________package__________________________________%
+
+
+\title{\vspace{-1\baselineskip}
+\huge{\textbf{Fastjson 项目报告}}
+}
+\author{LiHanxuan \qquad Student number: 2017K8009908009 \\{\tt lihanxaun17@mails.ucas.ac.cn}}
+\date{January 2020}
+
+\fancypagestyle{plain}{%
+\fancyhf{}
+\fancyhead[LO,RE]{\sffamily University of Chinese Academy of Science}
+\fancyhead[RO,LE]{\sffamily ARTIFICIAL INTELLIGENCE}
+\fancyfoot[LO,RE]{\sffamily /Computer Science}
+\fancyfoot[RO,LE]{\sffamily\bfseries\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO,LE]{\sffamily University of Chinese Academy of Science}
+\fancyhead[LO,RE]{\sffamily ARTIFICIAL INTELLIGENCE}
+\fancyfoot[LO,RE]{\sffamily /Computer Science}
+\fancyfoot[RO,LE]{\sffamily\bfseries\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{0pt}
+
+
+\begin{document}
+\maketitle
+
+
+\section*{\Large Exercise 1}
+\paragraph{Prove: Uniform-cost search gives out the optimal solution\\}
+
+$Proof:$
+题目相当于证明：对于每个添加到已搜索集合的节点，他们的最佳路径都已找到。
+下面采用归纳法对该命题进行证明
+
+\quad(1) 对于第一个被添加到已搜索集合的节点，其本身就是最佳路径
+
+\quad(2) 假设在某一状态时，已搜索集合中的所有节点的最佳路径均已找到，那么对于已搜索集合$fringe$上的代价最低点$f$，其最佳路径也已经找到（仅由已探索集合和点$f$组成）。该推论可以用反证法证明，如果最佳路径不是该路径，则必将通过$fringe$上的另一节点$f'$，则节点$f$就不是$frienge$上的代价最小点，矛盾。
+
+\quad(3)综上所述，由归纳法可进一步得到：对于每个添加到已搜索集合的节点，他们的最佳路径都已找到。
+
+\hfill $\square$
+
+
+\section*{\Large Exercise 2}
+\paragraph{Prove：if a heuristic is consistent, it must be admissible.\\}
+$Proof:$
+题目相当于证明：对任意结点$n$，和它的任意祖先n',有$h(n') \le h(n) + c(n',a,n)$,即$h(n) \le h^*(n)$
+下面采用反证法对该命题进行证明：
+
+假设存在一个节点$n_0$，使得$$h(n_0) > h^*(n_0)$$
+
+则:
+\begin{equation*}
+\begin{split}
+        h(n_0)+g(n_0) &> h^*(n_0) + g(n_0)\\
+                  &=g(GOAL)\\
+                  &=g(GOAL)+h(GOAL)    (h(GOAL)=0)
+\end{split}
+\end{equation*}
+对上式移项可得：
+\begin{equation*}
+\begin{split}
+        h(n_0) &> g(GOAL)-g(n_0)+h(GOAL)\\
+           &=c(n_0,a,GOAL)+h(GOAL)
+\end{split}
+\end{equation*}
+与$consistent$矛盾\\
+综上所述，不存在这样的节点$n_0$
+
+
+\section*{\Large Exercise 3}
+\paragraph{Give an example of heuristic, which is admissible but not consistent.\\}
+定义：
+$$h(n)=\lfloor h^*(n) \rfloor$$
+该定义显然满足$h(n)<h^*(n)$($admissible$的定义)\\
+但不满足consistent,例如：
+\begin{figure}[htp]
+\centering % 图片居中
+\includegraphics[width = 12cm]{pic1.png}
+\end{figure}
+可以发现：
+$$h(n_0)=\lfloor h^*(n_0) \rfloor=2>c(n_0,a,n')+\lfloor h^*(n') \rfloor=1.2$$
+不符合$consistent$的定义
+
+\section*{\Large Exercise 4}
+\paragraph{Prove: A* of graph search is not optimal with admissible heuristic\\}
+$Proof:$
+定义：
+$$h(n)=\lfloor h^*(n) \rfloor$$
+考虑如下情况：
+\begin{figure}[htp]
+\centering % 图片居中
+\includegraphics[width = 12cm]{pic2.png}
+\end{figure}
+$n_0$为起始节点，Goal为目标节点，对该情况进行图搜索：\\
+\quad(1)由于$h(N_1)=h(N_2)=2$,$frontier$扩展到$N_1$和$N_2$\\
+\quad(2)由于$g(N_1)+h(N_1)=2<g(N_2)+h(N_2)=2.8$,$frontier$扩展到$N_3$\\
+\quad(3)此时，由于$N_3$节点已经被扩展，所以最终得到的路径只能是$N_0——N_1——N_3——Goal(2.9)$\\
+\quad(4)然而，最优路径应该为$N_0——N_2——N_3——Goal(2.8)$\\
+综上所述，该命题得证
+
+\hfill $\square$
+\end{document}
